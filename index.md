@@ -10,7 +10,7 @@ permalink: /
 
 Writing a 16 bit (8086-like) operating system...
 
-### Note to follow along
+### Following along
 
 If you are new to OS dev I recommend you to read some of the following ressources. Since this project is only about a 16-bit OS it should be sufficient to read about the booting process and the real mode:
 
