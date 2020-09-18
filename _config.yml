@@ -4,12 +4,3 @@ title: VIteen OS
 description: a 16 bit operating system
 
 has_children: true
-
-+-- ..
-|-- (Jekyll files)
-|
-|-- v0.1
-|   |-- index.md
-|
-|-- (Jekyll files)
-+-- ..
