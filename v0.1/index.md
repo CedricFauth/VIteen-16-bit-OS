@@ -26,3 +26,6 @@ Every Intel x86 CPU starts in something called 'real mode' which a 16-bit mode w
 After starting a PC the BIOS (Basic Input/Output System), which is a firmware stored on the PC's Motherboard, takes over and performs hardware tests. The BIOS always runs in 16-bit real mode and therefore has direct access to the hardware. After successfully testing memory etc. BIOS tries to find bootable software on a boot device, such as a hard drive, CD, or floppy disk.
 
 The BIOS looks up the first sector called boot sector of all storage devices until it finds an OS or boot loader. A sector has a size of 512 bytes. It can check whether or not code is marked as bootable by looking at the last word (16 bit = 2Byte) of a sector. If the last word is the so-called 'magic number' (which is 0xaa55) the BIOS knows this block is a boot block that actually contains code to run.
+
+After identifying the boot sector, the whole sector gets loaded into memory at address 0x7c00 and the BIOS hands over control by giving the CPU the instruction to jump to 0x7c00 and run the boot sector's code.
+
