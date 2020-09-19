@@ -33,7 +33,7 @@ printhex:				; params: AX: integer value
 	push cs
 	push di
 
-	mov di, prefix+0x2
+	mov di, hexbuff+0x2
     mov bx, ax
     xor dx, dx
     mov cx, 0x4
@@ -53,11 +53,12 @@ printhex:				; params: AX: integer value
 		pop di
 		pop cx
 		pop bx
-		mov ax, prefix
+		mov ax, hexbuff
 		call printstr
 		pop ax
 		ret
-	prefix db '0x0000',0
+
+hexbuff db '0x0000',0
 
 ;testfun:
 ;	push bp

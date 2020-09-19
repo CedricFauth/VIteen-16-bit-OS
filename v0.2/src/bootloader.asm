@@ -48,12 +48,14 @@ entry:
 
 	JMP $				; endless loop
 
+; includes
+
+%include 'io.asm'
+
 ; data labels
 
 msg_btldr db 0xa,0xd,'[+] Bootloader started',0xa,0xd,0x0
 msg_sgmts db '[+] Segments initialized',0xa,0xd,0x0
-
-%include 'io.asm'
 
 TIMES 510-($-$$) db 0	; padding: 2 bytes left
 
