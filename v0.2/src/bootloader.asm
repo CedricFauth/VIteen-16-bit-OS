@@ -27,19 +27,18 @@ entry:
 
 	; print letter A via BIOS int
 
-	mov ah, 0x0e		; BIOS teletype output
-	push 'B'			; push 'B' on stack
-	push 'A'			; push 'A' on stack
+	push 'B'			
+	push 'A'
+	call printstr
+	add sp, 0x02
 
-	pop bx				; pop 'A'
-	mov al, bl			; move ASCII value from BL to AL
-	int 0x10			; raise interrupt: BIOS print routine
-
-	mov bx, [bp-2]		; mov 'A' from stack to BX
-	mov al, bl
-	int 0x10
+	pop bx			; pop 'B'
+	mov al, bl	
+	int 0x10			
 
 	JMP $				; endless loop
+
+%include 'io.asm'
 
 TIMES 510-($-$$) db 0	; padding: 2 bytes left
 
