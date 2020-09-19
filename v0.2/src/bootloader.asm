@@ -25,18 +25,33 @@ entry:
 	mov ss, ax			; set ss base to 0x0
 	mov sp, bp			; set stack pointer to 0x7c00
 
-	; print letter A via BIOS int
-
-	push 'B'			
-	push 'A'
+	mov ax, msg_btldr	; load first address of message
+	call printstr		; print message
+	mov ax, msg_sgmts
 	call printstr
-	add sp, 0x02
 
-	pop bx			; pop 'B'
-	mov al, bl	
-	int 0x10			
+	mov ax, 0xface
+	call printhex
+	call println
+
+	mov ax, ds
+	call printhex
+	call println
+
+	mov ax, 0x1a3b
+	call printhex
+	call println
+
+	mov ax, 12
+	call printhex
+	call println
 
 	JMP $				; endless loop
+
+; data labels
+
+msg_btldr db 0xa,0xd,'[+] Bootloader started',0xa,0xd,0x0
+msg_sgmts db '[+] Segments initialized',0xa,0xd,0x0
 
 %include 'io.asm'
 
