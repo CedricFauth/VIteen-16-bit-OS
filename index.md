@@ -13,7 +13,7 @@ Writing a 16 bit (8086-like) operating system that is programmable using C ...
 ### Following along
 
 Prerequisites needed:
-* this repo
+* the [GitHub repo](https://github.com/CedricFauth/VIteen-16-bit-OS/)
 * bcc (as86, ld86)
 * nasm
 
