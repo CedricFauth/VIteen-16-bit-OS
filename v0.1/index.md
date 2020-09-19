@@ -6,7 +6,14 @@ title: v0.1
 
 # Booting something
 
-The goal is to build a 16-bit operating system (kernel) that is programmable using C.
+**Goal of v0.1: loading a program (bootloader.bin) into memory and executing it.**
+
+Run this version:
+```
+cd v0.1/src
+nasm -f bin bootloader.asm -o bootloader.bin
+qemu-system-x86_64 -drive format=raw,file=bootloader.bin
+```
 
 ## Real and protected mode
 
