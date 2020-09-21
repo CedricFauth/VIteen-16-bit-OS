@@ -26,36 +26,20 @@ entry:
 	mov sp, bp			; set stack pointer to 0x7c00
 
 	mov ax, msg_btldr	; load first address of message
-	call printstr		; print message
-	mov ax, msg_sgmts
-	call printstr
+	call printstr		; print boot message
 
-	mov ax, 0xface
-	call printhex
-	call println
-
-	mov ax, ds
-	call printhex
-	call println
-
-	mov ax, 0x1a3b
-	call printhex
-	call println
-
-	mov ax, 12
-	call printhex
-	call println
+	call see_segments	; print all segment addresses
 
 	JMP $				; endless loop
 
 ; includes
 
 %include 'io.asm'
+%include 'log.asm'
 
 ; data labels
 
 msg_btldr db 0xa,0xd,'[+] Bootloader started',0xa,0xd,0x0
-msg_sgmts db '[+] Segments initialized',0xa,0xd,0x0
 
 TIMES 510-($-$$) db 0	; padding: 2 bytes left
 
