@@ -40,13 +40,13 @@ ax = 0x000a
 # else ax is now an ascii value from '0' to '9'
 ax = 'a' # (0x61)
 # next store the ascii value of ax in buffer[i]; i++
-bx = '0xa000'
+buffer = '0xa000'
 # l--
 # if l == 0: return
 # else goto start
 
 # output after 4th iteration:
-bx = '0xa100'
+buffer = '0xa100'
 ```
 
 After implementing the printstr and printhex routines we can print the start addresses of CS, SS, DS, and ES.
