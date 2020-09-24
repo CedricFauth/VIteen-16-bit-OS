@@ -6,7 +6,7 @@ title: v0.2
 
 # Displaying text and numbers (bootloader)
 
-**Goal of v0.2:**
+**Goal of v0.2: Writing functions to display text and converting numbers to text**
 
 Run this version:
 ```
