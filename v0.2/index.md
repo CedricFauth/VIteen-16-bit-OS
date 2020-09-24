@@ -20,6 +20,32 @@ After achieving this single character print can write an assembly routine that p
 
 Now that our printstr function works there is another important function we need - printing integers. Integers aren't in ASCII form so the idea is to store an ASCII representation of an integer value and print that buffer with our printstr routine. This is a bit more complicated but quite interesting. For simplicity, we only write a printhex function that will print integers in hexadecimal. The algorithm works by taking 4 bits (of a 16-bit integer value) at a time, converting them into an ASCII value ('0'-'9','a'-'f'), and storing this at a specific position in a buffer. Repeating these steps 4 times will convert a whole 16-bit integer into a 4-byte character string.
 
-TODO: algorithm examples
+Step by step example of the hex-to-string algorithm (only works for 16 bit numbers or less)
+``` python
+# initial configuration
+buffer = '0x0000'
+bx = 0xa100
+ax = 0
+i = 2
+l = 4
+# start:
+# now get rotate bx to the right by 4 bit
+bx = 0x100a
+# get 0-4th LSB of bx (ax = bx & 0xf)
+ax = 0x000a 
+# if ax >= 0xa add 0x27
+# then always add 0x30
+# if ax >= 0xa then ax is now an ascii value from 'a' to 'f'
+# else ax is now an ascii value from '0' to '9'
+ax = 'a' # (0x61)
+# next store the ascii value of ax in buffer[i]; i++
+bx = '0xa000'
+# l--
+# if l == 0: return
+# else goto start
+
+# output after 4th iteration:
+bx = '0xa100'
+```
 
 After implementing the printstr and printhex routines we can print the start addresses of CS, SS, DS, and ES.
