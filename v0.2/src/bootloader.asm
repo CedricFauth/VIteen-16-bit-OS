@@ -44,4 +44,3 @@ msg_btldr db 0xa,0xd,'[+] Bootloader started',0xa,0xd,0x0
 TIMES 510-($-$$) db 0	; padding: 2 bytes left
 
 DW 0xaa55				; 2 byte magic number
-

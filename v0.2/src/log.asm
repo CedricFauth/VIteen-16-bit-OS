@@ -1,4 +1,9 @@
-; prints all absolute segment locations
+
+;-----------------------------------------------
+;      bootloader library by Cedric Fauth
+;-----------------------------------------------
+
+; printing absolute addresses of all segments
 see_segments:               ; params: none
     push ax
     ; info message

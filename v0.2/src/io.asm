@@ -1,3 +1,9 @@
+
+;-----------------------------------------------
+;      bootloader library by Cedric Fauth
+;-----------------------------------------------
+
+; printing a new line
 println:
 	push ax
 	mov ah, 0x0e		; BIOS teletype output
@@ -8,6 +14,7 @@ println:
 	pop ax
 	ret
 
+; printing a string
 printstr:				; params: AX: string address
 	
 	push ax
@@ -26,6 +33,7 @@ printstr:				; params: AX: string address
 		pop ax
 		ret
 
+; printing a hex number
 printhex:				; params: AX: integer value
 	
 	push ax
@@ -58,7 +66,7 @@ printhex:				; params: AX: integer value
 		pop ax
 		ret
 
-hexbuff db '0x0000',0	; internal buffer for printing hex
+	hexbuff db '0x0000',0	; internal buffer for printing hex
 
 ;testfun:
 ;	push bp
