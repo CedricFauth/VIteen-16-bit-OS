@@ -5,7 +5,7 @@ title: v0.1
 ---
 
 # Booting something
-
+\
 **Goal of v0.1: loading a program (bootloader.bin) into memory and executing it.**
 
 Run this version:
