@@ -4,6 +4,8 @@ has_toc: false
 title: v0.2
 ---
 
+# Displaying text and numbers (bootloader)
+
 **Goal of v0.2:**
 
 Run this version:
