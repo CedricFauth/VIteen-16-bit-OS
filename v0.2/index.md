@@ -9,7 +9,8 @@ title: v0.2
 Run this version:
 ```
 cd v0.2/src
-TODO
+nasm -f bin bootloader.asm -o bootloader.bin
+qemu-system-x86_64 -curses -drive format=raw,file=bootloader.bin
 ```
 
 ## Printing bootloader information
