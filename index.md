@@ -7,7 +7,7 @@ permalink: /
 ---
 
 # VIteen: 16 bit real mode OS
-
+\
 Writing a 16 bit (8086-like) operating system that is programmable using C ...
 
 ### Following along
