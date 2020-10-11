@@ -32,7 +32,7 @@ ax = 0
 i = 2
 l = 4
 # start:
-# now get rotate bx to the right by 4 bit
+# rotate bx to the right by 4 bit
 bx = 0x100a
 # get 0-4th LSB of bx (ax = bx & 0xf)
 ax = 0x000a 
