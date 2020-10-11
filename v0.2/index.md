@@ -15,6 +15,8 @@ nasm -f bin bootloader.asm -o bootloader.bin
 qemu-system-x86_64 -curses -drive format=raw,file=bootloader.bin
 ```
 
+![](https://user-images.githubusercontent.com/25117793/95678471-1ac12980-0bcd-11eb-94f8-e109ae5e2184.png)
+
 ## Printing bootloader information
 
 v0.2 is all about writing functions to print useful information (before loading the actual kernel etc.). Since I don't care about the bootloader's speed we print strings character by character using pre-build BIOS routines. This works by loading a character's ASCII value into a register and triggering an interrupt which activates a BIOS routine. The BIOS routine writes the character into the CGA Screen's memory which means we'll see it on our monitor.
