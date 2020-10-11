@@ -12,7 +12,9 @@ Run this version:
 ```
 cd v0.3/src
 nasm -f bin bootloader.asm -o bootloader.bin
-qemu-system-x86_64 -curses -drive file=bootloader.bin,index=0,if=floppy,format=raw
+qemu-system-x86_64 -drive file=bootloader.bin,index=0,if=floppy,format=raw
 ```
+
+![](https://user-images.githubusercontent.com/25117793/95678531-8efbcd00-0bcd-11eb-9b97-f92d2b8532c3.png)
 
 TODO text
