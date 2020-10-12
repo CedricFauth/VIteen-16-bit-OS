@@ -10,4 +10,7 @@ _main:
     mov ax, 0xFFF0  ; set stackpointer
     mov sp, ax
     call _main_c     ; call _cmain
-    retf            ; far return
+    
+    cli
+    hlt
+
