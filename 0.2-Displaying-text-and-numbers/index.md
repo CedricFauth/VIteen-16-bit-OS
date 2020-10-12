@@ -10,7 +10,7 @@ title: v0.2
 
 Run this version:
 ```
-cd v0.2/src
+cd 0.2-Displaying-text-and-numbers/src
 nasm -f bin bootloader.asm -o bootloader.bin
 qemu-system-x86_64 -curses -drive format=raw,file=bootloader.bin
 ```

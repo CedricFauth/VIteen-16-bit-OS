@@ -8,7 +8,7 @@ title: v0.4
 \
 Run this version:
 ```
-cd 0.4/src
+cd 0.4-C-code/src
 make qemu
 ```
 

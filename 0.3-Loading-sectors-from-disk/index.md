@@ -10,7 +10,7 @@ title: v0.3
 
 Run this version:
 ```
-cd v0.3/src
+cd 0.3-Loading-sectors-from-disk/src
 nasm -f bin bootloader.asm -o bootloader.bin
 qemu-system-x86_64 -drive file=bootloader.bin,index=0,if=floppy,format=raw
 ```

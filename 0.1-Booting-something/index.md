@@ -10,7 +10,7 @@ title: v0.1
 
 Run this version:
 ```
-cd v0.1/src
+cd 0.1-Booting-something/src
 nasm -f bin bootloader.asm -o bootloader.bin
 qemu-system-x86_64 -drive format=raw,file=bootloader.bin
 ```
