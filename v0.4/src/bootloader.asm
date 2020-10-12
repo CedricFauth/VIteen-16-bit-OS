@@ -41,17 +41,20 @@ entry:
 	; way 1 : changing es
 	mov ax, 0x800			; set es to addr of first sector loaded
 	mov es, ax				; ...
-	mov bx, [es:0x0]		; getting value at es+0
-	mov ax, 0x7c0			; set es to old value
-	mov es, ax				; ...
-	mov ax, bx				
-	call printhex			; printing 0xcafe
-	call println
-	; way 2 : leaving es the same
-	mov bx, [0x400+512]		; es+0x400 = 0x8000
-	mov ax, bx
-	call printhex			; printing 0xface
-	call println
+	call 0x800:0x0			; getting value at es+0
+
+	mov bp, 0x7c00		; set base pointer to 0x7c00
+	mov ax, 0x7c0		; store 0x7c0 temporarily
+	mov ds, ax			; data segment: 0x7c0 (*0x10 when addressing)
+	mov es, ax			; extra segment: 0x7c0 (*0x10 when addressing)
+
+	xor ax,ax			; store 0 temporarily
+	mov ss, ax			; set ss base to 0x0
+	mov sp, bp			; set stack pointer to 0x7c00
+
+
+	mov ax, msg_shutdown
+	call printstr
 
 	JMP $				; endless loop
 
@@ -65,8 +68,8 @@ entry:
 msg_btldr db 0xa,0xd,'[+] Bootloader started',0xa,0xd,0x0
 msg_lddsk db '[+] Loading kernel from disk ...',0xa,0xd,0x0
 
+msg_shutdown db 0xa,0xd,'[+] Jumped back',0xa,0xd,0x0
+
 TIMES 510-($-$$) db 0x0	; padding: 2 bytes left
 
 DW 0xaa55				; 2 byte magic number
-TIMES 256 dw 0xcafe
-TIMES 256 dw 0xface

@@ -6,7 +6,7 @@
 
 extern void putchar();
 
-int main(){
+int main_c(){
 
     putchar('X');
     return 0;
