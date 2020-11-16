@@ -11,6 +11,8 @@ extern void printstr();
 char a = 'A';
 char *str = "\n\rHello World!";
 
+short cell2 = 0x3541 & 0xFFFF;
+
 int main_c(){
 
     char x = 'X';
@@ -19,7 +21,7 @@ int main_c(){
     putchar(x);
     printstr(str);
 
-    putchar2(x);
+    putchar2(cell2);
 
     return 0;
 }

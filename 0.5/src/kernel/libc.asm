@@ -11,9 +11,12 @@ _putchar2:
 
 	mov bx, [bp+4]
 
+	push es
 	mov ax, 0xB800
 	mov es, ax
 	mov [es:0x2], bx
+	pop ax
+	mov es, ax
 
 	pop bx
 	pop ax
