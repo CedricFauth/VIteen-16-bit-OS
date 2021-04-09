@@ -1,6 +1,6 @@
 /*
 -----------------------------------------------
-        VIteen OS v0.5 by Cedric Fauth
+        VIteen OS v0.6 by Cedric Fauth
 -----------------------------------------------
 */
 
@@ -13,7 +13,7 @@ char *str = "\n\rHello World!";
 
 short cell2 = 0x3541 & 0xFFFF;
 
-int main_c(){
+main_c(){
 
     char x = 'X';
 
