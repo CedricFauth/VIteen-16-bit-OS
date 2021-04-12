@@ -6,17 +6,20 @@ all: os clean
 bootloader.bin: boot/io.asm boot/log.asm boot/bootloader.asm
 	$(ASM) -f bin boot/bootloader.asm -o bootloader.bin -iboot/
 
-test.o: kernel/kernel.c
-	$(CC) -ansi -0 -c -o test.o kernel/kernel.c
-	
-libc.o: kernel/libc.asm
-	nasm -f as86 -o libc.o kernel/libc.asm
+kernel.o: kernel/kernel.c
+	$(CC) -ansi -0 -c -o kernel.o kernel/kernel.c
 
-kernel.o: kernel/start.asm
-	nasm -f as86 -o kernel.o kernel/start.asm
+libc.o: kernel/libc.c
+	$(CC) -ansi -0 -c -o libc.o kernel/libc.c
 
-kernel.bin: kernel.o libc.o test.o
-	ld86 -d -o kernel.bin kernel.o test.o libc.o
+libc_asm.o: kernel/libc.asm
+	$(ASM) -f as86 -o libc_asm.o kernel/libc.asm
+
+start_kernel.o: kernel/start.asm
+	$(ASM) -f as86 -o start_kernel.o kernel/start.asm
+
+kernel.bin: start_kernel.o libc.o libc_asm.o kernel.o
+	ld86 -d -o kernel.bin start_kernel.o kernel.o libc.o libc_asm.o
 
 .PHONY: os qemu clean cleanall
 os: bootloader.bin kernel.bin
