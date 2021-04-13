@@ -26,7 +26,7 @@ os: bootloader.bin kernel.bin
 	cat bootloader.bin kernel.bin > os.bin
 
 qemu: os clean
-	qemu-system-x86_64 -curses -drive file=os.bin,index=0,if=floppy,format=raw
+	qemu-system-x86_64 -L "./pc-bios" -curses -drive file=os.bin,index=0,if=floppy,format=raw
 
 clean:
 	rm -f *.o bootloader.bin kernel.bin
