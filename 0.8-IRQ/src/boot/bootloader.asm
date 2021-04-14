@@ -38,7 +38,7 @@ entry:
 	mov es, ax
 
 
-	mov ax, 5
+	mov ax, 6
 	mov bx, 0x0		; es:bx = 0x7c00+0x400 = 0x8000
 	;mov bx,0
 	call disk_load

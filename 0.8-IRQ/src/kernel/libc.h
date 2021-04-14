@@ -18,6 +18,7 @@ extern void cga_setcell(uint16_t cell, uint16_t position);
 extern void cga_moveup(uint16_t pos, uint16_t offset);
 extern void register_irq();
 extern void halt();
+extern void debug_segments();
 
 // functions in libc.C
 void clear_screen();

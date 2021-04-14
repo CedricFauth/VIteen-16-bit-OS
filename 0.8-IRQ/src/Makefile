@@ -19,7 +19,7 @@ start_kernel.o: kernel/start.asm
 	$(ASM) -f as86 -o start_kernel.o kernel/start.asm
 
 kernel.bin: start_kernel.o libc.o libc_asm.o kernel.o
-	ld86 -d -o kernel.bin start_kernel.o kernel.o libc.o libc_asm.o
+	ld86 -0 -d -o kernel.bin start_kernel.o kernel.o libc.o libc_asm.o
 
 .PHONY: os qemu clean cleanall
 os: bootloader.bin kernel.bin

@@ -12,16 +12,16 @@ main_c(){
 
     clear_screen();
     PRINTS("[ VIteen OS                                      v0.7 ]");
-    PRINTS("Hello\n1\n2\n3\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWorld                 123456789123456789123456789123456");
-    
-    PRINTX(100);
-
+    //PRINTS("Hello\n1\n2\n3\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWorld                 1234567890123456789012345678901234567890");
+    //PRINTX(1);
     DEBUGS("[ DEBUG               "); DEBUGS(smile); DEBUGS(" ]");
-    DEBUGS("Hello\n1\n2\n3\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWorld                 123456789123456789123456789");
+    //DEBUGS("Hello\n1\n2\n3\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWorld                 123456789012345678901234567890");
 
+    config_keyboard();
     register_irq();
+    debug_segments();
 
-    halt();
+    sleep();
     for(;;);
 
     return 0;
