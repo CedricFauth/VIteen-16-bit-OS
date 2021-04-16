@@ -3,17 +3,20 @@ bits 16
 ; global accessible functions
 global imodu
 global _cga_setcell
+global _cga_getcell
 global _outb
+global _inb
 global _cga_moveup
 global _register_irq
-global _sleep
 global _debug_segments
 global _config_keyboard
+global _stopping
+global _sleep
 
 extern _scr_d	; used for debug print
 extern _printx
 extern _prints
-extern _keyboard	; extern interrupt request function
+extern _irq	; extern interrupt request function
 
 imodu: ;bcc function for modulo
 	push bx
@@ -94,6 +97,10 @@ _debug_segments:
 	pop bp
 	ret
 
+_stopping:
+	hlt
+	ret
+
 _sleep:
 	hlt
 	jmp _sleep
@@ -121,25 +128,24 @@ irq_wrapper:
 	cli
 	push bp
 	mov bp, sp
-	pusha
+	;pusha
 
-	wait_for_input:
-	in al, 0x64
-	and al, 0x1
-	jz  wait_for_input
+	;wait_for_input:
+	;in al, 0x64
+	;and al, 0x1
+	;jz  wait_for_input
 
-	in al, 60h
+	;in al, 60h
 	
-	and ax, 0xFF
-	push ax
-	call _keyboard
-	add sp, BYTE 2
+	;and ax, 0xFF
+	;push ax
+	call _irq
+	;add sp, BYTE 2
 
-	mov al, 20h
-	out 20h, al	; enable new interrupts
+	;mov al, 20h
+	;out 20h, al	; enable new interrupts
 
-	popa
-
+	;popa
 	mov sp, bp
 	pop bp
 	sti
@@ -166,33 +172,35 @@ _config_keyboard:
 	mov al, 0xF4
 	out 0x60, al
 
+	;;;; dont know if this is necessary:
+
 	; set scancode set to 1
-	wait0:
-	in  al, 0x64    ; Read Status byte
-    and al, 0x2    	; Test if input buff is ready
-    jnz wait0	    ; Wait until 1b
-	mov al, 0xF0
-	out 0x60, al	; send scancode cmd
-	wait1:
-	in al, 0x64
-	and al, 0x1		; test if output is full
-	jz wait1
-	in al, 0x60		; read output
-	cmp al, 0xFA
-	jne wait0		; if not ACK resend
-	wait2:
-	in  al, 0x64
-    and al, 0x2    	; Test if input buff is ready
-    jnz wait2	    ; Wait until 1b
-	mov al, 0x2
-	out 0x60, al	; send scancode cmd
-	wait3:
-	in al, 0x64
-	and al, 0x1		; test if output is full
-	jz wait3
-	in al, 0x60		; read scancode-set value
-	cmp al, 0xFA
-	jne wait0
+;	wait0:
+;	in  al, 0x64    ; Read Status byte
+;    and al, 0x2    	; Test if input buff is ready
+;    jnz wait0	    ; Wait until 1b
+;	mov al, 0xF0
+;	out 0x60, al	; send scancode cmd
+;	wait1:
+;	in al, 0x64
+;	and al, 0x1		; test if output is full
+;	jz wait1
+;	in al, 0x60		; read output
+;	cmp al, 0xFA
+;	jne wait0		; if not ACK resend
+;	wait2:
+;	in  al, 0x64
+;    and al, 0x2    	; Test if input buff is ready
+;    jnz wait2	    ; Wait until 1b
+;	mov al, 0x2
+;	out 0x60, al	; send scancode cmd
+;	wait3:
+;	in al, 0x64
+;	and al, 0x1		; test if output is full
+;	jz wait3
+;	in al, 0x60		; read scancode-set value
+;	cmp al, 0xFA
+;	jne wait0
 
 	; clear output buffer
 	wait5:
@@ -266,20 +274,58 @@ _cga_setcell:
 	pop bp
 	ret
 
+_cga_getcell:
+	push bp
+	mov bp, sp
+	pushf
+	push di
+	push bx
+	push es
+
+	mov ax, 0xB800
+	mov es, ax
+	
+	mov di, [bp+4]
+	shl di, 1
+	mov ax, [es:di]
+
+	pop es
+	pop bx
+	pop di
+	popf
+	mov sp, bp
+	pop bp
+	ret
+
+_inb:
+	push bp
+	mov  bp, sp
+	pushf
+	push dx
+
+	mov dx, [bp+4]
+	in al, dx
+
+	pop dx
+	popf
+	mov sp, bp
+	pop bp
+	ret
+
 _outb:
 	push bp
 	mov  bp, sp
 	pushf
-	push eax
-	push edx
+	push ax
+	push dx
 
 	mov dx, [bp+4]
 	mov al, [bp+6]
  
 	out dx, al
  
-	pop edx
-	pop eax
+	pop dx
+	pop ax
 	popf
 	mov sp, bp
 	pop bp

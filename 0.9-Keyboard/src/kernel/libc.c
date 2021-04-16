@@ -1,11 +1,14 @@
 #include "libc.h"
+#include "keyboard.h"
 
-/*
-	I/O BEGIN
-*/
 
 #define NUM_ROWS 25
 #define NUM_COLS 80
+
+#define PIC1_CMD  0x20
+#define PIC1_DATA 0x21
+#define PIC2_CMD  0xA0
+#define PIC2_DATA 0xA1
 
 struct screen {
 	enum {
@@ -62,6 +65,27 @@ void put(char c, screen_t *scr) {
 		scr->row = scr->row + 1;
 	} else if (c == '\r') {
 		scr->col = scr->start_c;
+	} else if (c == TAB) {
+		scr->col = (scr->col/4+1) * 4;
+	} else if (c == BACK) {
+		// top left corner
+		if (scr->col == scr->start_c && scr->row == scr->start_r+1) {
+			return;
+		// left border
+		} else if (scr->col == scr->start_c) {
+			scr->row = scr->row-1;
+			scr->col = scr->end_c;
+			while (scr->col > scr->start_c
+				&& cga_getcell(scr->row*NUM_COLS+scr->col-1) == ' ')
+			{
+				scr->col = scr->col-1;
+			}
+			if (scr->col == scr->end_c) scr->col = scr->col -1;
+		// anywhere else
+		} else {
+			scr->col = scr->col - 1;
+		}
+		cga_setcell(scr->color + ' ', scr->row*NUM_COLS+scr->col);
 	} else if (c == '\0') {
 		return;
 	} else {
@@ -128,10 +152,38 @@ void prints(char *s, screen_t *scr) {
 	} 
 }
 
-/*
-	I/O END
-*/
+void IRQ_set_mask(uint8_t IRQline) {
+    uint16_t port;
+    uint8_t value;
+ 
+    if(IRQline < 8) {
+        port = PIC1_DATA;
+    } else {
+        port = PIC2_DATA;
+        IRQline = IRQline - 8;
+    }
+    value = inb(port) | (1 << IRQline);
+    outb(port, value);        
+}
 
-/*void irq() {
-	prints("\nirq", &scr_d);
-}*/
+char getch() {
+	char k;
+	clear_key();
+	//DEBUGS("stop\n");
+	while(!(k = get_key()))
+		stopping();
+	return k;
+}
+
+// only gets called if keyboard interrupt
+void irq() { 
+	uint8_t scancode;
+	//DEBUGS("irq\n");
+	// wait for input
+	while (inb(0x64) & 0x1 == 0) {}
+	// read input
+	scancode = inb(0x60);
+	keyboard(scancode);
+
+	outb(0x20, 0x20); // interrupt done
+}

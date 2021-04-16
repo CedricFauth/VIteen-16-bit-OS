@@ -11,22 +11,24 @@ char smile[] = {1,0};
 main_c(){
 
     clear_screen();
+
     PRINTS("[ VIteen OS                                      v0.9 ]");
-    //PRINTS("Hello\n1\n2\n3\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWorld                 1234567890123456789012345678901234567890");
-    //PRINTX(1);
     DEBUGS("[ DEBUG               "); DEBUGS(smile); DEBUGS(" ]");
-    //DEBUGS("Hello\n1\n2\n3\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWorld                 123456789012345678901234567890");
 
     DEBUGS("Configure keyboard...\n");
     config_keyboard();
+
     DEBUGS("Enable IRQ...\n");
+    IRQ_set_mask(0); // disable timer
     register_irq();
+
     DEBUGS("Registers:\n");
     debug_segments();
     DEBUGS("\nDone.\n");
 
+    for (;;) PRINTC(getch());
+
+    DEBUGS("GOING 2 SLEEP");
     sleep();
     for(;;);
-
-    return 0;
 }

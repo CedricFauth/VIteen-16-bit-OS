@@ -1,16 +1,17 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-#include "libc.h"
-
 enum {
 	ESC=27,
 	BACK=8,
 	TAB=9,
-	ENTER=13
+	ENTER='\n'
 };
 
 void keyboard(uint8_t scancode);
+
+void clear_key();
+char get_key();
 
 #endif //KEYBOARD_H
 

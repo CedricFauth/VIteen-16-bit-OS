@@ -1,5 +1,6 @@
 
 #include "keyboard.h"
+#include "libc.h"
 
 static char key_to_ascii[] = {
 	 0,		ESC,	'1',	'2',
@@ -27,6 +28,14 @@ static struct {
 	char ascii;
 } keys = {0,0,0,0};
 
+void clear_key() {
+	keys.ascii = 0;
+}
+
+char get_key() {
+	return keys.ascii;
+}
+
 void translate_scancode(int set, uint16_t scancode, int break_code) {
 	if (break_code) {
 		if (scancode == 0x1D) keys.ctrl = 0;
@@ -38,6 +47,13 @@ void translate_scancode(int set, uint16_t scancode, int break_code) {
 		else if (scancode == 0x38) keys.alt = 1;
 		else if (scancode < 0x3A) {
 			keys.ascii = key_to_ascii[scancode];
+
+			if (keys.ascii == ESC) {
+				while(inb(0x64) & 0x2 != 0) { }
+				outb(0x64, 0xFE);
+				// reset
+			}
+
 			if (keys.shift){
 				if(keys.ascii >= 'a' && keys.ascii <= 'z' ) {
 					keys.ascii = keys.ascii + 'A'-'a';
