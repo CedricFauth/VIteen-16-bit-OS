@@ -109,7 +109,6 @@ _register_irq:
 	push bp
 	mov bp, sp
 
-	pusha
 	push es
 	mov ax,0x0
 	mov es,ax
@@ -118,7 +117,6 @@ _register_irq:
 	mov [es:4*9+2], cs
 	sti
 	pop es
-	popa
 
 	mov sp, bp
 	pop bp
@@ -128,7 +126,6 @@ irq_wrapper:
 	cli
 	push bp
 	mov bp, sp
-	;pusha
 
 	;wait_for_input:
 	;in al, 0x64
@@ -145,7 +142,6 @@ irq_wrapper:
 	;mov al, 20h
 	;out 20h, al	; enable new interrupts
 
-	;popa
 	mov sp, bp
 	pop bp
 	sti
@@ -154,7 +150,6 @@ irq_wrapper:
 _config_keyboard:	
 	push bp
 	mov bp, sp
-	pusha
 
 	; enable keyboard
 	; clear output buffer
@@ -211,7 +206,6 @@ _config_keyboard:
 	jmp wait5
 	exit1:
 
-	popa
 	mov sp, bp
 	pop bp
 	ret
@@ -221,7 +215,6 @@ _cga_moveup:
 	mov bp, sp
 	pushf
 	push di
-	push ax
 	push bx
 	push es
 
@@ -237,10 +230,8 @@ _cga_moveup:
 	shl di, 1
 	mov [es:di], ax
 
-	pop ax
-	mov es, ax
+	pop es
 	pop bx
-	pop ax
 	pop di
 	popf
 	mov sp, bp
@@ -252,7 +243,6 @@ _cga_setcell:
 	mov bp, sp
 	pushf
 	push di
-	push ax
 	push bx
 	push es
 
@@ -264,10 +254,8 @@ _cga_setcell:
 	shl di, 1
 	mov [es:di], ax
 
-	pop ax
-	mov es, ax
+	pop es
 	pop bx
-	pop ax
 	pop di
 	popf
 	mov sp, bp
@@ -316,7 +304,6 @@ _outb:
 	push bp
 	mov  bp, sp
 	pushf
-	push ax
 	push dx
 
 	mov dx, [bp+4]
@@ -325,7 +312,6 @@ _outb:
 	out dx, al
  
 	pop dx
-	pop ax
 	popf
 	mov sp, bp
 	pop bp

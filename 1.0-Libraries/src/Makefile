@@ -25,15 +25,20 @@ start_kernel.o: kernel/start.asm
 kernel.bin: start_kernel.o libc.o libc_asm.o kernel.o keyboard.o
 	ld86 -0 -d -o kernel.bin start_kernel.o kernel.o libc.o libc_asm.o keyboard.o
 
-.PHONY: os qemu clean cleanall
+.PHONY: os qemu qemu_old clean cleanall
 os: bootloader.bin kernel.bin
 	cat bootloader.bin kernel.bin > os.bin
+	dd if=/dev/zero of=os.img bs=512 count=81
+	dd if=os.bin of=os.img conv=notrunc
 
-qemu: os clean
+qemu_old: os clean
 	qemu-system-x86_64 -L "./pc-bios" -curses -drive file=os.bin,index=0,if=floppy,format=raw
 
+qemu: os clean
+	qemu-system-x86_64 -L "./pc-bios" -curses -drive file=os.img,format=raw
+
 clean:
-	rm -f *.o bootloader.bin kernel.bin
+	rm -f *.o *.bin
 
 cleanall:
-	rm -f *.o *.bin
+	rm -f *.o *.bin *.img

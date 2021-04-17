@@ -1,6 +1,6 @@
 
 ;-----------------------------------------------
-;        VIteen OS v0.6 by Cedric Fauth
+;        VIteen OS v1.0 by Cedric Fauth
 ;-----------------------------------------------
 
 ; setting up directives for nasm
@@ -33,23 +33,20 @@ entry:
 	mov ax, msg_lddsk
 	call printstr
 
+	; reset hard drive 1
+	mov ah, 00h
+	mov dl, 80h
+	int 13h
 
-	mov ax, 0x51
+	; prepare for read
+	mov ax, 0x800
 	mov es, ax
-
-
-	mov ax, 6
-	mov bx, 0x0		; es:bx = 0x7c00+0x400 = 0x8000
-	;mov bx,0
+	mov ax, 80
+	mov bx, 0x0			; es:bx = 0x7c00+0x400 = 0x8000
+	mov dl, 80h
 	call disk_load
-
-	; print values of loaded sectors
-	; way 1 : changing es
-	;mov ax, 0x800			; set es to addr of first sector loaded
-	;mov es, ax				; ...
-	;call es:0x0
-	;call 0x504:0x0			; getting value at es+0
-	call 0x51:0x0
+	
+	call 0x800:0x0		; far call in kernel start
 
 	JMP $				; endless loop
 
