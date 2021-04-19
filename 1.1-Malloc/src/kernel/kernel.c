@@ -17,8 +17,9 @@ int sum(int i, int limit){
 }
 
 main_c(){
+    int i,j;
     char c;
-    char *buff, *buff2;
+    char *buff = 1, *buff2, *buff4;
     clear_screen();
     PRINTS("[ VIteen OS                                      v1.0 ]");
     DEBUGS("[ DEBUG                 ]");
@@ -40,28 +41,24 @@ main_c(){
 
     print_heap();
 
-    buff = malloc(sizeof(*buff)*4);
-    buff[0] = 'H';
-    buff[1] = 'i';
-    buff[2] = '!';
-    buff[3] = 0;
-    print_heap();
-    //PRINTS("buff at:"); PRINTX(buff);
-    //PRINTS(buff);
+    /*
+    for (i = 1; i != 0x21; i = i+1) {
+        buff = malloc(sizeof(char) * 0x3FC);
+        PRINTX(i); PRINTC(':'); PRINTX(buff); PRINTC(' ');
+    }
 
-    buff2 = malloc(sizeof(*buff2)*2);
-    buff[0] = 'X';
-    buff[1] = 0;
     print_heap();
-    //PRINTS("buff2 at:"); PRINTX(buff2);
-    //PRINTS(buff2);
 
+    for(j = 0; j != i; j = j+1) {
+        free(buff-0x400*j);
+    }*/
+    // testing and leaving 1 byte left (+2*4 blocks)
+    buff = malloc(sizeof(char) * (0x8000-9));
+    print_heap();
     free(buff);
 
     print_heap();
-
-    //free(buff2);
-
+    
     //PRINTX(sum(1,100));
     while ('q' != (c = getch())) PRINTC(c);
 

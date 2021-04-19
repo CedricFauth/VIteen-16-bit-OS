@@ -41,7 +41,7 @@ entry:
 	; prepare for read
 	mov ax, 0x800
 	mov es, ax
-	mov ax, 80
+	mov ax, 127
 	mov bx, 0x0			; es:bx = 0x7c00+0x400 = 0x8000
 	mov dl, 80h
 	call disk_load

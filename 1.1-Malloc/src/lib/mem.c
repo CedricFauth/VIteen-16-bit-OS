@@ -47,12 +47,12 @@ void *malloc(uint16_t size) {
     if (size <= 0 || head == NULL || head == MAGIC) return NULL;
     
     // search chunk with enough space
-    while (*chunk_pp != NULL && (*chunk_pp)->size < size) {
+    while (*chunk_pp != MAGIC && (*chunk_pp)->size < size) {
         chunk_pp = &(*chunk_pp)->next;
     }
 
     // not enough space found
-    if (*chunk_pp == NULL) return NULL;
+    if (*chunk_pp == MAGIC) return NULL;
 
     //PRINTS("chunk found\n");
 
@@ -72,8 +72,21 @@ void *malloc(uint16_t size) {
     return ret->data;
 }
 
-void try_merge(struct block *frist, struct block *second) {
-    return;
+// if merge successful, returns first else second
+struct block *try_merge(struct block *first, struct block *second) {
+
+    // check if blocks are next to each other
+    if (first->data + first->size != second) return second;
+
+    DEBUGS("MERGE: "); DEBUGX(first); DEBUGS(" AND "); 
+    DEBUGX(second); DEBUGC('\n');
+
+    first->next = second->next;
+    first->size = first->size + sizeof(*second) + second->size;
+
+    second->next = NULL;
+    second->size = 0;
+    return first;
 }
 
 struct block *get_block_before(struct block *chunk) {
@@ -86,10 +99,12 @@ struct block *get_block_before(struct block *chunk) {
 
 void free(void *p) {
     struct block *chunk, *before;
-    if (p == NULL) return;
+    if (p == NULL || p == MAGIC) return;
 
     chunk = (struct block*) ((uint16_t)p-sizeof(struct block));
+    DEBUGS("FREE: ");
     DEBUGX(chunk);
+    DEBUGC('\n');
 
     if (chunk->next != MAGIC /*|| chunk == head*/) return;
 
@@ -100,9 +115,9 @@ void free(void *p) {
         before = get_block_before(chunk);
         chunk->next = before->next;
         before->next = chunk;
-        try_merge(before, chunk);
+        chunk = try_merge(before, chunk);
     }
-    try_merge(chunk, chunk->data+chunk->size);
+    try_merge(chunk, chunk->next);
     
     /*
     adr_pp = get_block_before(chunk);
